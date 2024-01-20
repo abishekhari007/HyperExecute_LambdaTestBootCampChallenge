@@ -1,0 +1,100 @@
+version: "0.1"
+user: abishekh
+key: roQgM6HyphXEIBIO0wjKxXwPElhyp8lU83JJx26Y35Tpk4sA3h
+testSuites: []
+pre: [mkdir m2_cache_dir, mvn -Dmaven.repo.local=$CACHE_DIR -DskipTests=true install clean]
+preDirectives:
+    commands: [mkdir m2_cache_dir, mvn -Dmaven.repo.local=$CACHE_DIR -DskipTests=true install clean]
+    maxRetries: 0
+    shell: ""
+    workingDirectory: ""
+post: [ls target/surefire-reports/]
+postDirectives:
+    commands: [ls target/surefire-reports/]
+    shell: ""
+    workingDirectory: ""
+env:
+    CACHE_DIR: m2_cache_dir
+jobLabel:
+    - lambdatestbootcamp
+    - linux
+    - challenge
+    - hyperexecute
+runson: linux
+autosplit: true
+concurrency: 2
+testDiscovery:
+    autosubset: true
+    command: grep 'test name' testng.xml | awk '{print$2}' | sed 's/name=//g' | sed 's/\x3e//g'
+    mode: dynamic
+    type: raw
+testRunnerCommand: mvn test `-Dplatname=linux `-Dmaven.repo.local=m2_cache_dir `-DselectedTests=$test `-Dbrowser=chrome
+globalTimeout: 150
+tunnelOpts:
+    testsPerTunnel: 10
+testSuiteTimeout: 150
+testSuiteStep: 150
+cacheDirectories:
+    - .m2
+cacheKey: '{{ checksum "pom.xml" }}'
+retryOnFailure: true
+maxRetries: 3
+jobID: 72d588bb-2511-4636-8ea5-6e460fcbc5d6
+mergeArtifacts: true
+uploadArtefacts:
+    - name: ExecutionSnapshots
+      path:
+        - target/surefire-reports/html/**
+      email:
+        to: []
+        metaInfo: []
+        linkValidity: 0
+codeDirectory: HyperExecute_LambdaTestBootCampChallenge
+report: true
+partialReports:
+    type: html
+    location: target/surefire-reports/html
+    frameworkName: extent
+    email:
+        to: []
+        metaInfo: []
+        linkValidity: 0
+framework:
+    name: ""
+    flags: []
+    discoveryFlags: []
+    discoveryType: ""
+    runnerFlags: []
+    workingDirectory: ""
+    isTestNGXMLSuite: false
+    defaultReports: false
+    additional_args: null
+    licenseKey: ""
+    userdefinediscovery: false
+    toscaArgs: null
+    version: ""
+    downloadURL: ""
+    baseCommand: ""
+cypress: false
+betaFeature:
+    setPartiallyCompletedAsCompleted: false
+combineTasksInMatrixMode: false
+captureScreenRecordingForScenarios: false
+maxRetriesPreSteps: 0
+triggerMode: false
+sourcePayload:
+    verifySSL: true
+collectLocalGitData: true
+dynamicAllocation: false
+appium: false
+platformConfig: null
+differentialUpload:
+    enabled: false
+    ttlHours: null
+    forcedDisabled: false
+project:
+    id: ""
+    name: ""
+    type: default
+meta: {}
+alwaysRunPostSteps: false
